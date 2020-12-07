@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using Spire.Doc;
 using TemplateEngine.Docx;
+using Document = Spire.Doc.Document;
 
 namespace B2B.TemplateEngine
 {
@@ -20,6 +19,13 @@ namespace B2B.TemplateEngine
     private Dictionary<string, Func<string>> _dictMapper = new Dictionary<string, Func<string>>();
 
 
+    public Worker(string inputPath, string outputPath)
+    {
+      _outputPath = outputPath;
+      _inputPath = inputPath;
+    }
+
+
     public void AddListMapper(ListMapper listMapper)
     {
       _tableMapperList.Add(listMapper);
@@ -28,13 +34,6 @@ namespace B2B.TemplateEngine
     public void SetDictMapper(Dictionary<string, Func<string>> dictMapper)
     {
       _dictMapper = dictMapper;
-    }
-
-
-    public Worker(string inputPath, string outputPath)
-    {
-      _outputPath = outputPath;
-      _inputPath = inputPath;
     }
 
 
@@ -52,14 +51,13 @@ namespace B2B.TemplateEngine
       }
 
 
-      var propertiesContent = Worker.AddSimpleActions(_dictMapper);
+      var propertiesContent = AddSimpleActions(_dictMapper);
       propertiesContent.AddRange(tableContents);
 
       var content = new Content(propertiesContent.ToArray());
 
       Finalizer(content);
     }
-
 
 
     private void Finalizer(Content content)
@@ -70,6 +68,19 @@ namespace B2B.TemplateEngine
         outputDocument.FillContent(content);
         outputDocument.SaveChanges();
       }
+
+
+      Document document = new Document();
+      document.LoadFromFile(_outputPath);
+
+      //Convert Word to PDF
+      document.SaveToFile("toPDF.PDF", FileFormat.PDF);
+
+
+      //Launch Document
+      Process.Start("toPDF.PDF");
+
+
     }
 
     public static TableContent AddTableActions(string tablePlaceholderName, List<Dictionary<string, Func<string>>> list)
