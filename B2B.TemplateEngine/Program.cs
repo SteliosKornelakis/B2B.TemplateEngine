@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DocumentFormat.OpenXml.Drawing;
 using TemplateEngine.Docx;
 
 namespace B2B.TemplateEngine
@@ -31,7 +32,37 @@ namespace B2B.TemplateEngine
 
     private static void Main(string[] args)
     {
+      //Run();
+      RunDia();
+    }
 
+    private static void RunDia()
+    {
+
+      // Instantiate Worker
+      var worker = new Worker(@"C:\Test\dia.docx", @"C:\Test\dia_output.docx");
+
+      //Setup properties mappings
+      var dict = new Dictionary<string, Func<string>>
+      {
+        {"eponimia", () => "asd"},
+        {"afm", () => "cde"},
+        {"doy", () => "fgh"},
+        {"nomimos_ekprosopos_plireksousiou", () => "X"},
+        {"nomimos_ekprosopos_eksousiodotimenou", () => ""},
+      };
+
+      //Set them
+      worker.SetDictMapper(dict);
+
+
+      //Execute
+
+      worker.Execute();
+    }
+    
+    private static void Run()
+    {
       // Instantiate Worker
       var worker = new Worker(@"C:\Test\initial.docx", @"C:\Test\output.docx");
 

@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="DocX\dia.docx" />
     <None Include="DocX\initial.docx" />
     <None Include="packages.config" />
   </ItemGroup>
