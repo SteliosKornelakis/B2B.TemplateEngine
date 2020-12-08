@@ -61,9 +61,23 @@ namespace B2B.TemplateEngine
 
         listMapper.List.Add(dictionary);
       }
-
       //Add List mapper
       worker.AddListMapper(listMapper);
+
+
+      var listMapperTable_Metavoli_Taxythtas = new ListMapper(@"Table_Metavoli_Taxythtas");
+      foreach (var syndesi in aitisi.NeaSyndesi)
+      {
+        var dictionary = new Dictionary<string, Func<string>>()
+        {
+          {"Table_Metavoli_Taxythtas_ServiceId", () => syndesi.ServiceId},
+        };
+
+        listMapperTable_Metavoli_Taxythtas.List.Add(dictionary);
+      }
+
+      //Add List mapper
+      worker.AddListMapper(listMapperTable_Metavoli_Taxythtas);
 
       //Execute
 
